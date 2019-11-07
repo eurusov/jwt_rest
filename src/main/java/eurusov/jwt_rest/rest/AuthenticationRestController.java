@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-public class AuthenticationRestControllerV1 {
+public class AuthenticationRestController {
 
     private AuthenticationManager authenticationManager;
 
