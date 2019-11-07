@@ -27,7 +27,6 @@ public class AuthenticationRestControllerV1 {
 
     private UserService userService;
 
-
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
         try {
@@ -37,13 +36,13 @@ public class AuthenticationRestControllerV1 {
 
             String token = jwtTokenProvider.createToken(user);
 
-            Map<Object, Object> response = new HashMap<>();
+            Map<String, String> response = new HashMap<>();
 
             response.put("username", username);
             response.put("token", token);
             return  ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("invalid username or password");
+            throw new BadCredentialsException("Invalid username or password");
         }
     }
 
