@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
+@CrossOrigin
 @AllArgsConstructor
 @RequestMapping("/api")
 public class AuthenticationRestController {
