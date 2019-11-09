@@ -1,6 +1,7 @@
 package eurusov.jwt_rest.rest;
 
 import eurusov.jwt_rest.dto.AuthenticationRequestDto;
+import eurusov.jwt_rest.model.Authority;
 import eurusov.jwt_rest.model.User;
 import eurusov.jwt_rest.security.jwt.JwtTokenProvider;
 import eurusov.jwt_rest.service.UserService;
@@ -12,8 +13,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -40,9 +43,17 @@ public class AuthenticationRestController {
 
             response.put("username", username);
             response.put("token", token);
+            response.put("role", getMajorRole(user.getAuthorities()));
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
+    }
+
+    private String getMajorRole(Set<Authority> authorities) {
+        return authorities.stream()
+                .min(Comparator.comparing(Authority::getSortOrder))
+                .map(Authority::getAuthority)
+                .orElse("EMPTY");
     }
 }
