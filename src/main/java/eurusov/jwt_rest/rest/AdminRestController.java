@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,18 +25,19 @@ public class AdminRestController {
     }
 
     @GetMapping("/user")
-    public User getPrincipal(Principal principal) {
-        return userService.getUserWithAuthorities(principal.getName());
+    public User getPrincipal(@RequestParam(required = false) Long id, @RequestParam(required = false) String name) {
+        if (id != null) {
+            return userService.getOneWithAuthorities(id);
+        }
+        if (name != null) {
+            return userService.getUserWithAuthorities(name);
+        }
+        return null;
     }
 
     @GetMapping("/authorities")
     public List<Authority> getAuthorities() {
         return authorityService.getAll();
-    }
-
-    @GetMapping("user/{userId}")
-    public User getUser(@PathVariable Long userId) {
-        return userService.getOneWithAuthorities(userId);
     }
 
     @PostMapping("/add")
